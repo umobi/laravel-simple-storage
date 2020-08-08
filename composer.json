@@ -28,11 +28,7 @@
         "league/flysystem": "^1.0.64"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.16",
-        "orchestra/testbench": "^5.0",
-        "phpunit/phpunit": "^9.0",
-        "psalm/plugin-laravel": "^1.2",
-        "vimeo/psalm": "^3.11"
+        "phpunit/phpunit": "^9.0"
     },
     "suggest": {
         "league/flysystem-aws-s3-v3": "Required to use AWS S3 file storage",
