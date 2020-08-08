@@ -61,15 +61,16 @@ trait StorageFieldsTrait
                 $contents = null;
                 $mimeType = null;
                 $fileSize = 0;
+                $fileExtension = null;
 
                 $isImage = false;
                 if ($value instanceof File ||
                     $value instanceof UploadedFile) {
-                    $fileExtension = $value->getClientOriginalExtension();
+                    $fileExtension = Str::lower($value->getClientOriginalExtension());
                     $mimeType = $value->getMimeType();
                     $fileSize = $value->getSize();
                     $isImage = in_array($fileExtension, ['png', 'jpg', 'gif', 'webp']);
-                    $filename = str_replace($fileExtension, "", Str::slug($value->getClientOriginalName())) . "." . $fileExtension;
+                    $filename = str_replace($fileExtension, "", Str::slug(Str::lower($value->getClientOriginalName()))) . "." . $fileExtension;
                 }
 
                 $isUrl = false;
@@ -89,16 +90,17 @@ trait StorageFieldsTrait
                     }
 
                     if (!$extension && isset($fileExtension)) {
-                        $extension = $fileExtension;
+                        $extension = Str::lower($fileExtension);
                     }
 
-                    $filename = Str::random(40) . "." . $extension;
                     $contents = $image->stream($extension, $quality ?? 90)->__toString();
                     $mimeType = mimetype_from_extension($extension) ?? MimeType::detectByContent($contents);
-                    $fileSize = strlen($contents);
                 } else {
+                    $extension = strtolower($fileExtension);
                     $contents = $value;
                 }
+
+                $filename = Str::random(40) . "." . $extension;
 
                 if (isset($contents)) {
                     /** @var FilesystemAdapter $storage */
